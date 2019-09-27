@@ -27,13 +27,6 @@ type IperfTest struct {
 	JsonEnd       []byte `json:"end"`
 }
 
-type Protocol int
-
-const (
-	UDP = iota
-	TCP
-)
-
 type IperfStream struct {
 	Ptr *C.struct_iperf_stream
 }
@@ -135,22 +128,22 @@ func IperfSetTestBlksize(test *IperfTest, blksize int) {
 	C.iperf_set_test_blksize(test.Ptr, C.int(blksize))
 }
 
-//Set protocol : C.Pudp or C.Ptcp or
-func IperfSetTestProtocol(test *IperfTest, protocol Protocol) error {
-	var proto C.int
-	switch protocol {
-	case UDP:
-		proto = C.Pudp
-	case TCP:
-		proto = C.Ptcp
-	default:
-		return errors.New("Wrong protocol")
-	}
-	if C.set_protocol(test.Ptr, proto) < 0 {
-		return errors.New("Unknown error while setting protocol")
-	}
-	return nil
-}
+//Set protocol : C.Pudp or C.Ptcp
+// func IperfSetTestProtocol(test *IperfTest, protocol Protocol) error {
+// 	var proto C.int
+// 	switch protocol {
+// 	case UDP:
+// 		proto = C.Pudp
+// 	case TCP:
+// 		proto = C.Ptcp
+// 	default:
+// 		return errors.New("Wrong protocol")
+// 	}
+// 	if C.set_protocol(test.Ptr, proto) < 0 {
+// 		return errors.New("Unknown error while setting protocol")
+// 	}
+// 	return nil
+// }
 
 func IperfSetTestJsonOutput(test *IperfTest, value int) {
 	C.iperf_set_test_json_output(test.Ptr, C.int(value))
