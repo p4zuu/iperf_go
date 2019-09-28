@@ -16,9 +16,6 @@ import (
 	"unsafe"
 )
 
-// IperfTest is a little trick
-// The C. functions returns a private variable
-// So we created a new struct with public members so that the object are usable outside
 type IperfTest struct {
 	Ptr           *C.struct_iperf_test
 	JsonString    string

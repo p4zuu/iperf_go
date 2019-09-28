@@ -3,7 +3,6 @@ package main
 import (
 	"errors"
 	"fmt"
-	"strconv"
 
 	iperf "github.com/lthomasmp/iperf_go"
 )
@@ -24,6 +23,6 @@ func main() {
 	// Setting json output to 1 is necessary to get the json of the result
 	iperf.IperfSetTestJsonOutput(anIperftest, 1)
 	if error := iperf.IperfRunClient(anIperftest); error < 0 {
-		fmt.Println(errors.New("error while calling run_client function : " + strconv.Itoa(error)))
+		fmt.Println(errors.New("error while calling run_client function"))
 	}
 }
