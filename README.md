@@ -21,16 +21,10 @@ $ go get github.com/lthomasmp/iperf_go
 
 ## Running 
 
-To test the wrapper, just run the server and the client code in two different terminals.
+To test the wrapper, just run the example. This example use your local IP address.
 
 ```console
 $ cd examples
-$ go run server.go <your_port>
+$ go build ClientServerExample.go
+$ ./ClientServerExample <your_port>
 ```
-
-```console
-$ cd examples
-$ go run client.go 127.0.0.1 <your_port>
-```
-
-The wrapper and the examples are not finished yet, I will have finished them soon.

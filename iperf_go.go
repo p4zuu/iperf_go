@@ -169,6 +169,10 @@ func IperfRunClient(test *IperfTest) int {
 	return int(C.iperf_run_client(test.Ptr))
 }
 
+func IperfRunServer(test *IperfTest) int {
+	return int(C.iperf_run_server(test.Ptr))
+}
+
 func IperfStrError(errno int) string {
 	return C.GoString(C.iperf_strerror(C.int(errno)))
 }
