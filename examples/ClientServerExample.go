@@ -3,6 +3,7 @@ package main
 import (
 	"errors"
 	"fmt"
+	"log"
 	"os"
 	"strconv"
 	"time"
@@ -11,35 +12,36 @@ import (
 )
 
 func main() {
-	if len(os.Args) != 1 {
-		fmt.Println("Wrong argument. Usage: ./ClientServerExample <your_port>")
+	if len(os.Args) != 2 {
+		log.Fatalf("Wrong argument. Usage: ./ClientServerExample <your_port>")
 	}
 
 	Port, err := strconv.Atoi(os.Args[1])
 	if err != nil {
-		fmt.Println("Conversion failed")
+		log.Fatalf("Conversion failed")
 	}
 
 	go func() {
 		err := RunServer(Port)
 		if err != nil {
-			fmt.Println("Failed to run server")
+			log.Fatalf("Failed to run server")
 		}
 
 	}()
 	time.Sleep(3 * time.Second)
 	anIperfTest, err := RunClient(Port)
 	if err != nil {
-		fmt.Println("Failed to run the client")
+		log.Fatalf("Failed to run the client")
 	}
 	fmt.Println(anIperfTest.JsonString)
 }
 
 func RunClient(Port int) (*iperf.IperfTest, error) {
 	anIperftest := iperf.NewIperfTest()
+	defer iperf.IperfFreeTest(anIperftest)
 
 	if anIperftest.Ptr == nil {
-		fmt.Println(errors.New("test object is nil"))
+		return anIperftest, errors.New("test object is nil")
 	}
 	iperf.IperfDefaults(anIperftest)
 	iperf.IperfSetVerbose(anIperftest, 1)
@@ -60,16 +62,15 @@ func RunClient(Port int) (*iperf.IperfTest, error) {
 	if error := iperf.IperfRunClient(anIperftest); error < 0 {
 		return anIperftest, errors.New("error while calling run_client function")
 	}
-
-	iperf.IperfFreeTest(anIperftest)
 	return anIperftest, nil
 }
 
 func RunServer(Port int) error {
 	anIperftest := iperf.NewIperfTest()
+	defer iperf.IperfFreeTest(anIperftest)
 
 	if anIperftest.Ptr == nil {
-		fmt.Println(errors.New("test object is nil"))
+		return errors.New("test object is nil")
 	}
 	iperf.IperfDefaults(anIperftest)
 	iperf.IperfSetVerbose(anIperftest, 1)
@@ -83,6 +84,5 @@ func RunServer(Port int) error {
 		return errors.New("error while calling run_client function")
 	}
 
-	iperf.IperfFreeTest(anIperftest)
 	return nil
 }
