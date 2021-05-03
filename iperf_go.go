@@ -117,7 +117,7 @@ func IperfSetTestNumStreams(test *IperfTest, n int) {
 
 // Set bitrate in bit/sec
 func IperfSetTestRate(test *IperfTest, rate uint) {
-	C.iperf_set_test_rate(test.Ptr, C.ulonglong(rate))
+	C.iperf_set_test_rate(test.Ptr, C.ulong(rate))
 }
 
 // Set length of buffer for read/write in KB
